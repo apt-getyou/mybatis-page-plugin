@@ -44,14 +44,14 @@ public enum DataBaseType {
 	 */
 	public static DataBaseType initDataBaseType(String dataBaseType) {
 		if (dataBaseType == null || "".equals(dataBaseType)) {
-			throw new UnsupportedDataBaseType();
+			throw new UnsupportedDataBaseTypeException();
 		}
 		for (DataBaseType baseType : DataBaseType.values()) {
 			if (baseType.getDataBaseName().equalsIgnoreCase(dataBaseType)) {
 				return baseType;
 			}
 		}
-		throw new UnsupportedDataBaseType();
+		throw new UnsupportedDataBaseTypeException();
 	}
 
 	/**

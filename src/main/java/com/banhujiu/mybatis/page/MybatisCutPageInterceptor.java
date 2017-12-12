@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.executor.parameter.ParameterHandler;
@@ -49,7 +50,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 
 	private String countSQLSuffix;
 
-	protected HashSet<String> sqlNames = new HashSet<>();
+	protected Set<String> sqlNames = new HashSet<>();
 
 	private MappedStatement copyFromMappedStatement(MappedStatement ms, SqlSource newSqlSource) {
 		MappedStatement.Builder builder = new MappedStatement.Builder(ms.getConfiguration(), ms.getId(), newSqlSource, ms.getSqlCommandType());
@@ -72,7 +73,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 	/**
 	 * 进行切分
 	 */
-	@SuppressWarnings({"rawtypes", "unchecked"})
+	@SuppressWarnings({"unchecked"})
 	private <T> Object doCutPage(Invocation invocation, PageBean<T> pageBean)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
 		MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
@@ -230,9 +231,9 @@ public class MybatisCutPageInterceptor implements Interceptor {
 
 	@Override
 	public void setProperties(Properties properties) {
-		String dataBaseType = properties.getProperty("dataBaseType");
+		String dataBaseType = properties.getProperty(PagePropertyKey.DATA_BASE_TYPE);
 		this.dataBaseType = DataBaseType.initDataBaseType(dataBaseType);
-		this.countSQLSuffix = properties.getProperty("countSQLSuffix");
+		this.countSQLSuffix = properties.getProperty(PagePropertyKey.COUNT_SQL_SUFFIX);
 		this.countSQLSuffix = this.countSQLSuffix == null ? "Count" : this.countSQLSuffix;
 	}
 }
