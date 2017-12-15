@@ -5,7 +5,7 @@ package com.banhujiu.mybatis.page;
  * @date 2017/12/11 0011 15:44
  */
 public enum DataBaseType {
-	ORACLE("ORACLE") {
+	ORACLE {
 		@Override
 		public String getLimitSql(String sql, PageBean<?> pageBean) {
 			StringBuilder pageSql = new StringBuilder(100);
@@ -18,7 +18,7 @@ public enum DataBaseType {
 			return pageSql.toString();
 		}
 	},
-	MYSQL("MYSQL") {
+	MYSQL {
 		@Override
 		public String getLimitSql(String sql, PageBean<?> pageBean) {
 			StringBuilder pageSql = new StringBuilder(100);
@@ -29,16 +29,6 @@ public enum DataBaseType {
 		}
 	};
 
-	private String dataBaseName;
-
-	DataBaseType(String dataBaseName) {
-		this.dataBaseName = dataBaseName;
-	}
-
-	public String getDataBaseName() {
-		return dataBaseName;
-	}
-
 	/**
 	 * 初始化数据库类型
 	 */
@@ -47,7 +37,7 @@ public enum DataBaseType {
 			throw new UnsupportedDataBaseTypeException();
 		}
 		for (DataBaseType baseType : DataBaseType.values()) {
-			if (baseType.getDataBaseName().equalsIgnoreCase(dataBaseType)) {
+			if (baseType.toString().equalsIgnoreCase(dataBaseType)) {
 				return baseType;
 			}
 		}
