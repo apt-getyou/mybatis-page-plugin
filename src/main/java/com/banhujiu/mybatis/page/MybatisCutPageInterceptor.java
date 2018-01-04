@@ -103,6 +103,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 	/**
 	 * 执行统计SQL
 	 */
+	@SuppressWarnings("UnusedAssignment")
 	protected int exeCountSql(Configuration configuration, MappedStatement mappedStatement, BoundSql boundSql, Connection connection, Object parameter) throws SQLException {
 		PreparedStatement stmt = null;
 		ResultSet rs = null;
@@ -153,7 +154,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 	 */
 	private int getCount(Invocation invocation, Configuration configuration, MappedStatement statement, BoundSql boundSql, Object parameter)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
-		int count = 0;
+		int count;
 		String countSqlId;
 		if (statement.getId().endsWith(countSQLSuffix)) {
 			countSqlId = statement.getId();
@@ -161,10 +162,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 			countSqlId = statement.getId() + countSQLSuffix;
 		}
 		if (sqlNames.contains(countSqlId)) {
-			List<?> data = (List<?>) exeProceed(invocation, statement.getConfiguration().getMappedStatement(countSqlId));
-			if (data.size() > 0) {
-				count = data.size();
-			}
+			count = (Integer) exeProceed(invocation, statement.getConfiguration().getMappedStatement(countSqlId));
 		} else {
 			Executor ext = (Executor) invocation.getTarget();
 			Connection conn = getConnection(ext.getTransaction(), statement.getStatementLog());
