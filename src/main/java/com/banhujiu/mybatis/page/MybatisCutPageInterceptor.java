@@ -154,7 +154,7 @@ public class MybatisCutPageInterceptor implements Interceptor {
 	 */
 	private int getCount(Invocation invocation, Configuration configuration, MappedStatement statement, BoundSql boundSql, Object parameter)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SQLException {
-		int count;
+		int count = 0;
 		String countSqlId;
 		if (statement.getId().endsWith(countSQLSuffix)) {
 			countSqlId = statement.getId();
@@ -162,7 +162,10 @@ public class MybatisCutPageInterceptor implements Interceptor {
 			countSqlId = statement.getId() + countSQLSuffix;
 		}
 		if (sqlNames.contains(countSqlId)) {
-			count = (Integer) exeProceed(invocation, statement.getConfiguration().getMappedStatement(countSqlId));
+			List<?> data = (List<?>) exeProceed(invocation, statement.getConfiguration().getMappedStatement(countSqlId));
+			if (data != null && data.size() > 0) {
+				count = Integer.valueOf(data.get(0).toString());
+			}
 		} else {
 			Executor ext = (Executor) invocation.getTarget();
 			Connection conn = getConnection(ext.getTransaction(), statement.getStatementLog());
