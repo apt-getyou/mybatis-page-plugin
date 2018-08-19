@@ -8,7 +8,7 @@ import java.util.List;
  */
 public abstract class AbstractPageBean<T> implements PageBean<T> {
 	private Integer count;
-	private Boolean catFlag = true;
+	private Boolean catFlag = false;
 	private Integer totalPage;
 	private Integer pageSize = 20;
 	private List<T> data;
@@ -28,6 +28,7 @@ public abstract class AbstractPageBean<T> implements PageBean<T> {
 		}
 	}
 
+	@Override
 	public Integer getCount() {
 		return count;
 	}
@@ -41,6 +42,7 @@ public abstract class AbstractPageBean<T> implements PageBean<T> {
 		this.catFlag = catFlag;
 	}
 
+	@Override
 	public Integer getTotalPage() {
 		return totalPage;
 	}

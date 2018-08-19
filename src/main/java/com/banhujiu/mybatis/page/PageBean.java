@@ -12,6 +12,8 @@ public interface PageBean<T> {
 
 	void setCount(Integer count);
 
+	Integer getCount();
+
 	void setData(List<T> object);
 
 	List<T> getData();
@@ -19,4 +21,6 @@ public interface PageBean<T> {
 	Integer getPage();
 
 	Integer getPageSize();
+
+	Integer getTotalPage();
 }
